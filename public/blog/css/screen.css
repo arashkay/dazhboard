@@ -1,0 +1,29 @@
+body > .container{
+  margin-top: 80px
+}
+
+@font-face{
+  font-family:'FontAwesome';
+  src:url('/blog/css/fonts/fontawesome-webfont.eot?v=4.0.3');
+  src:url('/blog/css/fonts/fontawesome-webfont.eot?#iefix&v=4.0.3') format('embedded-opentype'),url('/blog/css/fonts/fontawesome-webfont.woff?v=4.0.3') format('woff'),url('/blog/css/fonts/fontawesome-webfont.ttf?v=4.0.3') format('truetype'),url('/blog/css/fonts/fontawesome-webfont.svg?v=4.0.3#fontawesomeregular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.navbar-call-to-action{
+  display: table;
+  height: 50px;
+}
+.navbar-call-to-action .center{
+  display:table-cell; 
+  vertical-align: middle;
+}
+
+/* Posts */
+.alert-tip p{
+  margin: 0 0 10px;
+}
+.alert-tip h3,
+.alert-tip .h3{
+  margin-top: 10px;
+}

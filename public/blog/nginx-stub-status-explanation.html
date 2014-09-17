@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+   <title>Nginx Stub Status Explanation</title>
+   <meta name="author" content="Zach Bruhnke" />
+
+   <!-- syntax highlighting CSS -->
+   <link rel="stylesheet" href="/blog/css/syntax.css" type="text/css" />
+   <link rel="stylesheet" href="/blog/css/bootstrap.min.css" type="text/css" />
+   <link rel="stylesheet" href="/blog/css/font-awesome.min.css" type="text/css" />
+
+   <!-- Homepage CSS -->
+   <link rel="stylesheet" href="/blog/css/screen.css" type="text/css" media="screen, projection" />
+
+</head>
+<body>
+  <nav class="navbar navbar-default navbar-fixed-top" role='navigation'>
+    <div class='container'>
+      <ul class='nav navbar-nav navbar-right'>
+        <div class='navbar-call-to-action'>
+          <div class='center'>
+            Pain Free Monitoring! <a class='btn btn-primary' href='#'>Get a Free Dazhboard!</a>
+          </div>
+        </div>
+      </ul>
+    </div>
+  </nav>
+  
+  <div class='container'><div class='row'>
+  <div class='col-sm-3'>
+    
+      <li><a>Nginx</a>
+        <ul>
+          
+            
+              
+            
+          
+            
+              
+                <li><a href="/blog/nginx-stub-status-explanation.html">Nginx Stub Status Explanation</a></li>
+              
+            
+          
+        </ul>
+      </li>
+    
+  </div>
+  <div class='col-sm-9'>
+    <h1>Nginx Stub Status Explanation</h1>
+
+<h2>Make sure HttpStubStatusModule is compiled</h2>
+
+<p>Locate the nginx executable and use below command to verify that HttpStubStatusModule is compiled and available to you:</p>
+
+<pre><code>nginx -V 2&gt;&amp;1 | grep -o http_stub_status_module
+</code></pre>
+
+<div class='alert alert-info alert-tip'>
+<h3>No Nginx?</h3>
+<p>Do you have problem with finding your nginx executable? If nginx is running already, do this:</p>
+<pre>
+<code>ps aux | grep [n]ginx</code>
+</pre>
+<p>The output will indicate the nginx executable path. And instead of just typing nginx in above command you should use the fullpath. (e.g. <code>/opt/etc/nginx -V 2>&1 | grep -o http_stub_status_module</code>).</p>
+</div>
+
+
+<p>You should get an output like this:</p>
+
+<pre><code class="shell">with-http_stub_status_module
+</code></pre>
+
+<div class='alert alert-danger'>
+If you dont see any output it means it is not compiled!
+</div>
+
+
+<h2>Monitoring address</h2>
+
+<p>Open your config file. You can find it's path by:</p>
+
+<pre><code class="shell">nginx -V 2&gt;&amp;1 | grep -o 'conf-path=[^ ]*'
+</code></pre>
+
+<p>Now inside one of your <code>server { ... }</code> tags, add below lines (it can be any of your server tags, more commonly the one listening to port 80 or 8080):</p>
+
+<pre><code>location /status {
+  stub_status on;
+  access_log   off;
+  allow 127.0.0.1;
+  deny all;
+}
+</code></pre>
+
+<p>Now reload your nginx with the new configuration by following command:</p>
+
+<pre><code class="shell">sudo nginx -s reload
+</code></pre>
+
+<div class='alert alert-info alert-tip'>
+<h3>No result?</h3>
+<p>Can't load it? make sure you are using fullpath to your nginx executable and you have the right permissions.</p>
+</div>
+
+
+<h2>Check the stats</h2>
+
+<p>Now open a web browser and access it at <strong>http://YOUR_IP_OR_ADDRESS/status</strong>. or use wget to read it from terminal:</p>
+
+<pre><code class="shell">wget http://127.0.0.1/status
+</code></pre>
+
+<div class='alert alert-info alert-tip'>
+<h3>No result?</h3>
+<p>Which port your server tag is listening to? 80, 8080 or something else? If it is port 8080 do this <code>wget http://127.0.0.1:8080/status</code>.</p>
+</div>
+
+
+<p>You should see a result like this in your browser (or if you have used wget, in the downloaded file <code>cat status</code>):</p>
+
+<pre><code>Active connections: 20
+server accepts handled requests
+ 20428 20428 51058 
+ Reading: 0 Writing: 10 Waiting: 10
+</code></pre>
+
+<ul>
+<li><strong>Active connections</strong> The current number of active client connections including Waiting connections. A single Client can have multiple connections with your server.</li>
+<li><strong>Accepts</strong> The total number of accepted client connections.</li>
+<li><strong>Handled</strong> The total number of handled connections. Generally, the parameter value is the same as accepts unless some resource limits have been reached.</li>
+<li><strong>Requests</strong> The total number of client requests. Dividing this number by <strong>Handled</strong> will give you number of requests per connection handled by Nginx (51058/20428 = 2.49 requests per connection).</li>
+<li><strong>Reading</strong> The current number of connections where nginx is reading the request header.</li>
+<li><strong>Writing</strong> The current number of connections where nginx is writing the response back to the client (This includes: nginx reads request body, processes request, or writes response to a client).</li>
+<li><strong>Waiting</strong> The current number of idle client connections waiting for a request. This is <strong>Active - (Reading + Writing)</strong>. This is keep alive connections and having a high <strong>Waiting</strong> number is not a bad thing. It means how many connections are still open and waiting for either a new request, or the keepalive expiration. You can change it in your nginx.conf file by modifying <code>keepalive_timeout</code>.</li>
+</ul>
+
+
+  </div>
+</div>
+
+<div id="related">
+  <h2>Related Posts</h2>
+  <ul class="posts">
+    
+      <li><span>13 Sep 2014</span> &raquo; <a href="/blog/installing-nginx-in-linux-from-source.html">Installing Nginx in Linux from Source</a></li>
+    
+      <li><span>11 Jan 2014</span> &raquo; <a href="/blog/a-test-post.html">Welcome to Bloggy</a></li>
+    
+  </ul>
+</div>
+</div>
+
+</div>
+
+<!-- Google Analytics -->
+
+<!-- Google Analytics end -->
+
+</body>
+</html>

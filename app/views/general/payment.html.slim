@@ -1,0 +1,32 @@
+= content_for :head do
+  = stylesheet_link_tag 'skeuocard.reset', 'skeuocard'
+  = javascript_include_tag 'cssua.min', 'skeuocard.min'
+  javascript:
+    $(function(){
+      var card = new Skeuocard($("#skeuocard"));
+    })
+
+#skeuocard.credit-card-input.no-js
+  p.no-support-warning
+  Either you have Javascript disabled, or you're using an unsupported browser, amigo! That's why you're seeing this old-school credit card input form instead of a fancy new Skeuocard. On the other hand, at least you know it gracefully degrades...
+  label for="cc_type" Card Type
+  select name="cc_type"
+    option value="" ...
+    option value="visa" Visa
+    option value="discover" Discover
+    option value="mastercard" MasterCard
+    option value="maestro" Maestro
+    option value="jcb" JCB
+    option value="unionpay" China UnionPay
+    option value="amex" American Express
+    option value="dinersclubintl" Diners Club
+  label for="cc_number" Card Number
+  input#cc_number type="text" name="cc_number" placeholder="XXXX XXXX XXXX XXXX" maxlength="19" size="19"
+  label for="cc_exp_month" Expiration Month
+  input#cc_exp_month type="text" name="cc_exp_month" placeholder="00"
+  label for="cc_exp_year" Expiration Year
+  input#cc_exp_year type="text" name="cc_exp_year" placeholder="00"
+  label for="cc_name" Cardholder's Name
+  input#cc_name type="text" name="cc_name" placeholder="John Doe"
+  label for="cc_cvc" Card Validation Code
+  input#cc_cvc type="text" name="cc_cvc" placeholder="123" maxlength="3" size="3"

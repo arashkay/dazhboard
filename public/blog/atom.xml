@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+ 
+ <title>BLOG_NAME</title>
+ <link href="YOUR_URL/atom.xml" rel="self"/>
+ <link href="YOUR_URL"/>
+ <updated>2014-09-17T09:56:35+10:00</updated>
+ <id>BLOG_URL</id>
+ <author>
+   <name>BLOG_NAME</name>
+ </author>
+
+ 
+ <entry>
+   <title>Nginx Stub Status Explanation</title>
+   <link href="YOUR_URL/nginx-stub-status-explanation.html"/>
+   <updated>2014-09-14T00:00:00+10:00</updated>
+   <id>BLOG_URL/nginx-stub-status-explanation</id>
+   <content type="html">&lt;h1&gt;Nginx Stub Status Explanation&lt;/h1&gt;
+
+&lt;h2&gt;Make sure HttpStubStatusModule is compiled&lt;/h2&gt;
+
+&lt;p&gt;Locate the nginx executable and use below command to verify that HttpStubStatusModule is compiled and available to you:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;nginx -V 2&amp;gt;&amp;amp;1 | grep -o http_stub_status_module
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;div class=&#39;alert alert-info alert-tip&#39;&gt;
+&lt;h3&gt;No Nginx?&lt;/h3&gt;
+&lt;p&gt;Do you have problem with finding your nginx executable? If nginx is running already, do this:&lt;/p&gt;
+&lt;pre&gt;
+&lt;code&gt;ps aux | grep [n]ginx&lt;/code&gt;
+&lt;/pre&gt;
+&lt;p&gt;The output will indicate the nginx executable path. And instead of just typing nginx in above command you should use the fullpath. (e.g. &lt;code&gt;/opt/etc/nginx -V 2&gt;&amp;1 | grep -o http_stub_status_module&lt;/code&gt;).&lt;/p&gt;
+&lt;/div&gt;
+
+
+&lt;p&gt;You should get an output like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;shell&quot;&gt;with-http_stub_status_module
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;div class=&#39;alert alert-danger&#39;&gt;
+If you dont see any output it means it is not compiled!
+&lt;/div&gt;
+
+
+&lt;h2&gt;Monitoring address&lt;/h2&gt;
+
+&lt;p&gt;Open your config file. You can find it&#39;s path by:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;shell&quot;&gt;nginx -V 2&amp;gt;&amp;amp;1 | grep -o &#39;conf-path=[^ ]*&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now inside one of your &lt;code&gt;server { ... }&lt;/code&gt; tags, add below lines (it can be any of your server tags, more commonly the one listening to port 80 or 8080):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;location /status {
+  stub_status on;
+  access_log   off;
+  allow 127.0.0.1;
+  deny all;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now reload your nginx with the new configuration by following command:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;shell&quot;&gt;sudo nginx -s reload
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;div class=&#39;alert alert-info alert-tip&#39;&gt;
+&lt;h3&gt;No result?&lt;/h3&gt;
+&lt;p&gt;Can&#39;t load it? make sure you are using fullpath to your nginx executable and you have the right permissions.&lt;/p&gt;
+&lt;/div&gt;
+
+
+&lt;h2&gt;Check the stats&lt;/h2&gt;
+
+&lt;p&gt;Now open a web browser and access it at &lt;strong&gt;http://YOUR_IP_OR_ADDRESS/status&lt;/strong&gt;. or use wget to read it from terminal:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;shell&quot;&gt;wget http://127.0.0.1/status
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;div class=&#39;alert alert-info alert-tip&#39;&gt;
+&lt;h3&gt;No result?&lt;/h3&gt;
+&lt;p&gt;Which port your server tag is listening to? 80, 8080 or something else? If it is port 8080 do this &lt;code&gt;wget http://127.0.0.1:8080/status&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+
+
+&lt;p&gt;You should see a result like this in your browser (or if you have used wget, in the downloaded file &lt;code&gt;cat status&lt;/code&gt;):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Active connections: 20
+server accepts handled requests
+ 20428 20428 51058 
+ Reading: 0 Writing: 10 Waiting: 10
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Active connections&lt;/strong&gt; The current number of active client connections including Waiting connections. A single Client can have multiple connections with your server.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Accepts&lt;/strong&gt; The total number of accepted client connections.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Handled&lt;/strong&gt; The total number of handled connections. Generally, the parameter value is the same as accepts unless some resource limits have been reached.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Requests&lt;/strong&gt; The total number of client requests. Dividing this number by &lt;strong&gt;Handled&lt;/strong&gt; will give you number of requests per connection handled by Nginx (51058/20428 = 2.49 requests per connection).&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Reading&lt;/strong&gt; The current number of connections where nginx is reading the request header.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Writing&lt;/strong&gt; The current number of connections where nginx is writing the response back to the client (This includes: nginx reads request body, processes request, or writes response to a client).&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Waiting&lt;/strong&gt; The current number of idle client connections waiting for a request. This is &lt;strong&gt;Active - (Reading + Writing)&lt;/strong&gt;. This is keep alive connections and having a high &lt;strong&gt;Waiting&lt;/strong&gt; number is not a bad thing. It means how many connections are still open and waiting for either a new request, or the keepalive expiration. You can change it in your nginx.conf file by modifying &lt;code&gt;keepalive_timeout&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Installing Nginx in Linux from Source</title>
+   <link href="YOUR_URL/installing-nginx-in-linux-from-source.html"/>
+   <updated>2014-09-13T00:00:00+10:00</updated>
+   <id>BLOG_URL/installing-nginx-in-linux-from-source</id>
+   <content type="html">&lt;h1&gt;Installing Nginx in Linux from Source&lt;/h1&gt;
+
+&lt;h3&gt;Download Nginx Source&lt;/h3&gt;
+
+&lt;p&gt;Login as &lt;strong&gt;root&lt;/strong&gt; and do this:&lt;/p&gt;
+
+&lt;h4&gt;Ubuntu&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code class=&quot;shell&quot;&gt;apt-get install libcurl4-dev
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;CentOS&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code class=&quot;shell&quot;&gt;yum install curl-devel
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Then move to src folder (create it if you don&#39;t have it) and download the nginx source:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;shell&quot;&gt;cd /usr/local/src
+&lt;/code&gt;&lt;/pre&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Welcome to Bloggy</title>
+   <link href="YOUR_URL/a-test-post.html"/>
+   <updated>2014-01-11T00:00:00+11:00</updated>
+   <id>BLOG_URL/a-test-post</id>
+   <content type="html">&lt;p&gt;Bloggy was born when &lt;a href=&quot;http://zbruhnke.com&quot;&gt;Zach&lt;/a&gt; was bored while his girlfriend and her sister were talking and watching the voice.&lt;/p&gt;
+
+&lt;p&gt;So this gem was created to generate a blog inside my rails application for a blog post I wrote while working at &lt;a href=&quot;http://engineyard.com&quot;&gt;Engine Yard&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Gem Updated 1/11/2014 with improvements for newer version of Jekyll and rake generate fix&lt;/p&gt;
+</content>
+ </entry>
+ 
+ 
+</feed>

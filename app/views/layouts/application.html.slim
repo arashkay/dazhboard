@@ -1,0 +1,40 @@
+doctype 5
+html
+  head
+    title Dazhboard
+    = stylesheet_link_tag    'all', media: 'all', 'data-turbolinks-track' => true
+    = javascript_include_tag 'all', 'data-turbolinks-track' => true
+    = yield :head
+    = csrf_meta_tags
+  body.cbp-spmenu-push 
+    nav#menu.cbp-spmenu.cbp-spmenu-vertical.cbp-spmenu-left
+      .profile
+    #panel
+      .navbar.navbar-default.navbar-top role='navigation'
+        .container
+          .navbar-header
+            a#menu-btn.navbar-menu-btn.btn.btn-default
+              i.fa.fa-bars
+            button.navbar-toggle type='button' data-toggle='collapse' data-target='#main-menu'
+              span.sr-only Toggle navigation
+              span.icon-bar
+              span.icon-bar
+              span.icon-bar
+          #main-menu.collapse.navbar-collapse role='navigation'
+            ul.nav.navbar-nav.navbar-right
+              li 
+                a href='#' Settings
+              li 
+                a href='#' Alerts
+              li.dropdown.navbar-profile
+                a.dropdown-toggle data-toggle='dropdown' href='#'
+                  img.navbar-profile-avatar src='http://demo.mvpready.com/admin/img/avatars/avatar-1-xs.jpg'
+                  i.fa.fa-caret-down
+                ul.dropdown-menu role='menu'
+                  li
+                    a
+                      i.fa.fa-user
+                      My Profile
+      .container
+        = yield
+
