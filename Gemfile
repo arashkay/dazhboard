@@ -12,7 +12,6 @@ gem 'turbolinks'
 gem 'coffee-rails', '~> 4.0.0'
 gem 'therubyracer',  platforms: :ruby
 gem 'stripe', :git => 'https://github.com/stripe/stripe-ruby'
-gem 'bloggy'
 gem 'whenever', :require => false
 
 group :development do
@@ -22,6 +21,7 @@ group :development do
   gem 'capistrano-rvm'
   gem 'guard-yard'
   gem 'spring'
+  gem 'bloggy'
 end
 
 gem 'sdoc', '~> 0.4.0',          group: :doc
