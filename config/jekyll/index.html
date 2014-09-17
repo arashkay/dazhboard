@@ -3,11 +3,16 @@ layout: default
 title: Server Administration Guide for Developers
 ---
 
-<div id="home">
-  <h1>Server Administration Guide for Developers</h1>
-  <ul class="posts">
-    {% for post in site.posts %}
-      <li><span>{{ post.date | date_to_string }}</span> &raquo; <a href="/blog{{ post.url }}">{{ post.title }}</a></li>
-    {% endfor %}
-  </ul>
+<h1>Server Administration Guide for Developers</h1>
+<p>You are a developer like me. Probably using ruby or python or php? and you have deployed (or willing to deploy) your app to a Linux server, right? And now its been hours that you wondering how you can fix that small issue at installation or how to secure your server or how to check performance and make sure things are running smoothly... </p>
+<h2>A Developer with Admin Role</h2>
+<p>You are not alone. It's common for a lead developer in a small startup to become the server admin too. Low budget and heaps of things to do. Here I will share what I have learnt after years of maintaining my servers in several startups.</p>
+<div class='alert alert-success'>
+These posts are from a ruby developer who is working with a linux servers (mostly CentOS) and typically using rails, aginx, unicorn, resque, mysql, passenger, elasticsearch, couchbase, redis.
 </div>
+<h3>Latests Posts</h3>
+<ul class="posts">
+  {% for post in site.posts %}
+    <li><span>{{ post.date | date_to_string }}</span> &raquo; <a href="/blog{{ post.url }}">{{ post.title }}</a></li>
+  {% endfor %}
+</ul>
