@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Useful Commands for Linux Server Monitoring
+category: Nginx
 ---
 # Useful Commands for Linux Server Monitoring
 
