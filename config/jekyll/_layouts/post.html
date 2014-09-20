@@ -5,19 +5,21 @@ comments: true
 
 <div class='row'>
   <div class='col-sm-3'>
-    {% for category in site.categories %}
-      <li><a>{{ category | first | capitalize }}</a>
-        <ul>
-          {% for posts in category %}
-            {% for post in posts %}
-              {% if post.url %}
-                <li><a href="/blog{{ post.url }}">{{ post.title }}</a></li>
-              {% endif %}
+    <ul class='list-unstyled list-tree'>
+      {% for category in site.categories %}
+        <li><a>{{ category | first | capitalize }}</a>
+          <ul class='list-unstyled'>
+            {% for posts in category %}
+              {% for post in posts %}
+                {% if post.url %}
+                  <li><a href="/blog{{ post.url }}">{{ post.title }}</a></li>
+                {% endif %}
+              {% endfor %}
             {% endfor %}
-          {% endfor %}
-        </ul>
-      </li>
-    {% endfor %}
+          </ul>
+        </li>
+      {% endfor %}
+    </ul>
   </div>
   <div class='col-sm-9'>
     {{ content }}

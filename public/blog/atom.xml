@@ -4,12 +4,95 @@
  <title>BLOG_NAME</title>
  <link href="YOUR_URL/atom.xml" rel="self"/>
  <link href="YOUR_URL"/>
- <updated>2014-09-18T13:55:42+10:00</updated>
+ <updated>2014-09-20T11:17:01+10:00</updated>
  <id>BLOG_URL</id>
  <author>
    <name>BLOG_NAME</name>
  </author>
 
+ 
+ <entry>
+   <title>Commands for Linux Server Troubleshooting</title>
+   <link href="YOUR_URL/commands-for-linux-server-troubleshooting.html"/>
+   <updated>2014-09-19T00:00:00+10:00</updated>
+   <id>BLOG_URL/commands-for-linux-server-troubleshooting</id>
+   <content type="html">&lt;h1&gt;Commands for Linux Server Troubleshooting&lt;/h1&gt;
+
+&lt;p&gt;When there is a problem in a live server, you need to be quick and probably don&#39;t know where to start from. Here is a list of things you can do to find the problem (most common server problems) within less than 10 minutes.&lt;/p&gt;
+
+&lt;h2&gt;Basic Server Troubleshooting Knowledge&lt;/h2&gt;
+
+&lt;h3&gt;How to watch result of a command continuously&lt;/h3&gt;
+
+&lt;p&gt;Guess what? It&#39;s called &lt;code&gt;watch&lt;/code&gt; command. It will run a linux command with intervals. For example to see your RAM details continuously, do this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;shell&quot;&gt;watch free
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;Terminating a command&lt;/h3&gt;
+
+&lt;p&gt;In order to terminate a command, press Ctrl+c.&lt;/p&gt;
+
+&lt;h2&gt;How to detect a problem in server&lt;/h2&gt;
+
+&lt;h3&gt;Check servers basic health&lt;/h3&gt;
+
+&lt;p&gt;Use &lt;code&gt;top&lt;/code&gt; to assess the basic system health and check (CPU, Memory, Processes). Do:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;shell&quot;&gt;top
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;As a result you can see:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Tasks&lt;/strong&gt;: how many processes and their states ...&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Cpu(s)&lt;/strong&gt;: how much of cpu is assigned used by user, system ...&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Mem&lt;/strong&gt;: memory (RAM) summary ...&lt;/li&gt;
+&lt;li&gt;A list of processes sorted by CPU usage. You can change the sorting by &lt;strong&gt;&#39;&amp;lt;&#39;,&#39;&gt;&#39;&lt;/strong&gt; or &lt;strong&gt;&#39;o&#39;,&#39;O&#39;&lt;/strong&gt;. In order to learn more you can press &lt;strong&gt;&#39;?&#39;&lt;/strong&gt; to see more information or press &lt;strong&gt;Ctrl+c&lt;/strong&gt; to exit.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;&lt;em&gt;A good alternative to &lt;strong&gt;top&lt;/strong&gt; is &lt;strong&gt;htop&lt;/strong&gt;, an evolution of top with features really amazing.&lt;/em&gt;&lt;/p&gt;
+
+&lt;h3&gt;Check memory summary&lt;/h3&gt;
+
+&lt;p&gt;Use &lt;code&gt;free&lt;/code&gt; to get valuable information on available RAM. Using &lt;code&gt;watch&lt;/code&gt; you can monitor changes too:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;shell&quot;&gt;watch -d free -m
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This will show how much free RAM you have, and how much is buffered by applications or cached for future purpose.&lt;/p&gt;
+
+&lt;h3&gt;Check DISK IO&lt;/h3&gt;
+
+&lt;p&gt;Use &lt;code&gt;iostat&lt;/code&gt; to monitor sustem input/output total since it was booted&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;shell&quot;&gt;watch -d iostat
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;As a result you can see:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;tps&lt;/strong&gt;: indicate the number of transfers per second&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;kB_read/s&lt;/strong&gt;: the amount of data read from the device per second&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;kB_wrtn/s&lt;/strong&gt;: the amount of data written to the device per second&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;kB_read&lt;/strong&gt;: The total number of blocks read.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;kB_wrtn&lt;/strong&gt;: The total number of blocks written.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;You can see IOs by each process with &lt;code&gt;iotop&lt;/code&gt; command. In order to see only list of processes doing the actual read/write do this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;shell&quot;&gt;iotop --only
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Total Read/Write&lt;/strong&gt;: first line shows total read and write per second&lt;/li&gt;
+&lt;li&gt;Read/Write by each process&lt;/li&gt;
+&lt;/ul&gt;
+
+</content>
+ </entry>
  
  <entry>
    <title>Useful Commands for Linux Server Monitoring</title>

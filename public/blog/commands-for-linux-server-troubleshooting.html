@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
 <head>
    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-   <title>Installing Nginx in Linux from Source</title>
+   <title>Commands for Linux Server Troubleshooting</title>
    <meta name="author" content="Zach Bruhnke" />
 
    <!-- syntax highlighting CSS -->
@@ -62,26 +62,81 @@
     </ul>
   </div>
   <div class='col-sm-9'>
-    <h1>Installing Nginx in Linux from Source</h1>
+    <h1>Commands for Linux Server Troubleshooting</h1>
 
-<h3>Download Nginx Source</h3>
+<p>When there is a problem in a live server, you need to be quick and probably don't know where to start from. Here is a list of things you can do to find the problem (most common server problems) within less than 10 minutes.</p>
 
-<p>Login as <strong>root</strong> and do this:</p>
+<h2>Basic Server Troubleshooting Knowledge</h2>
 
-<h4>Ubuntu</h4>
+<h3>How to watch result of a command continuously</h3>
 
-<pre><code class="shell">apt-get install libcurl4-dev
+<p>Guess what? It's called <code>watch</code> command. It will run a linux command with intervals. For example to see your RAM details continuously, do this:</p>
+
+<pre><code class="shell">watch free
 </code></pre>
 
-<h4>CentOS</h4>
+<h3>Terminating a command</h3>
 
-<pre><code class="shell">yum install curl-devel
+<p>In order to terminate a command, press Ctrl+c.</p>
+
+<h2>How to detect a problem in server</h2>
+
+<h3>Check servers basic health</h3>
+
+<p>Use <code>top</code> to assess the basic system health and check (CPU, Memory, Processes). Do:</p>
+
+<pre><code class="shell">top
 </code></pre>
 
-<p>Then move to src folder (create it if you don't have it) and download the nginx source:</p>
+<p>As a result you can see:</p>
 
-<pre><code class="shell">cd /usr/local/src
+<ul>
+<li><strong>Tasks</strong>: how many processes and their states ...</li>
+<li><strong>Cpu(s)</strong>: how much of cpu is assigned used by user, system ...</li>
+<li><strong>Mem</strong>: memory (RAM) summary ...</li>
+<li>A list of processes sorted by CPU usage. You can change the sorting by <strong>'&lt;','>'</strong> or <strong>'o','O'</strong>. In order to learn more you can press <strong>'?'</strong> to see more information or press <strong>Ctrl+c</strong> to exit.</li>
+</ul>
+
+
+<p><em>A good alternative to <strong>top</strong> is <strong>htop</strong>, an evolution of top with features really amazing.</em></p>
+
+<h3>Check memory summary</h3>
+
+<p>Use <code>free</code> to get valuable information on available RAM. Using <code>watch</code> you can monitor changes too:</p>
+
+<pre><code class="shell">watch -d free -m
 </code></pre>
+
+<p>This will show how much free RAM you have, and how much is buffered by applications or cached for future purpose.</p>
+
+<h3>Check DISK IO</h3>
+
+<p>Use <code>iostat</code> to monitor sustem input/output total since it was booted</p>
+
+<pre><code class="shell">watch -d iostat
+</code></pre>
+
+<p>As a result you can see:</p>
+
+<ul>
+<li><strong>tps</strong>: indicate the number of transfers per second</li>
+<li><strong>kB_read/s</strong>: the amount of data read from the device per second</li>
+<li><strong>kB_wrtn/s</strong>: the amount of data written to the device per second</li>
+<li><strong>kB_read</strong>: The total number of blocks read.</li>
+<li><strong>kB_wrtn</strong>: The total number of blocks written.</li>
+</ul>
+
+
+<p>You can see IOs by each process with <code>iotop</code> command. In order to see only list of processes doing the actual read/write do this:</p>
+
+<pre><code class="shell">iotop --only
+</code></pre>
+
+<ul>
+<li><strong>Total Read/Write</strong>: first line shows total read and write per second</li>
+<li>Read/Write by each process</li>
+</ul>
+
 
   </div>
 </div>
@@ -90,11 +145,11 @@
   <h2>Related Posts</h2>
   <ul class="posts">
     
-      <li><span>19 Sep 2014</span> &raquo; <a href="/blog/commands-for-linux-server-troubleshooting.html">Commands for Linux Server Troubleshooting</a></li>
-    
       <li><span>17 Sep 2014</span> &raquo; <a href="/blog/useful-commands-for-linux-server-monitoring.html">Useful Commands for Linux Server Monitoring</a></li>
     
       <li><span>14 Sep 2014</span> &raquo; <a href="/blog/nginx-stub-status-explanation.html">Nginx Stub Status Explanation</a></li>
+    
+      <li><span>13 Sep 2014</span> &raquo; <a href="/blog/installing-nginx-in-linux-from-source.html">Installing Nginx in Linux from Source</a></li>
     
   </ul>
 </div>

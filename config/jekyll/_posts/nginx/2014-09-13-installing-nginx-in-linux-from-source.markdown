@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Installing Nginx in Linux from Source
+category: Nginx
 ---
 
 # Installing Nginx in Linux from Source
