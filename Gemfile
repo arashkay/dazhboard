@@ -13,6 +13,7 @@ gem 'coffee-rails', '~> 4.0.0'
 gem 'therubyracer',  platforms: :ruby
 gem 'stripe', :git => 'https://github.com/stripe/stripe-ruby'
 gem 'whenever', :require => false
+gem "non-stupid-digest-assets"
 
 group :development do
   gem 'capistrano', '~> 3.1'
